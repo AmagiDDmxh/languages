@@ -1,4 +1,11 @@
 
+drawRows :: Integer -> Picture
+drawRows 11 = blank
+drawRows r = drawCols r (-10) & drawRows (r+1)
+
+drawCols :: Integer -> Integer -> Picture
+drawCols _ 11 = blank
+drawCols r c = drawTileAt r c & drawCols r (c+1)
 
 maze :: Integer -> Integer -> Integer 
 maze x y
