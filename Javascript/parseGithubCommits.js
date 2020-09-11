@@ -1,0 +1,22 @@
+let numExp = /(\d+,*\d*)+/g
+
+let parser = () =>
+  [].map
+    .call(document.querySelectorAll(".diffstat.tooltipped"), (i) => i.ariaLabel)
+    .filter((i) => i)
+    .map((i) => i.match(numExp))
+    .filter((i) => i)
+    .map((i) => i.map(mapToNumber));
+
+let mapToNumber = numText => 
+  numText.indexOf(',') 
+  ? Number(numText.split(',').join(''))
+  : Number(numText)
+
+let bullshitTriggerPoint = 1000
+let filterOutShit = n => n < bullshitTriggerPoint
+
+let outofBullshit = () => parser().filter(filterOutShit)
+let sumUpRealshitArgs = [(acc, [t]) => acc + t, 0]
+
+let realshits = () => outofBullshit().reduce(...sumUpRealshitArgs)
