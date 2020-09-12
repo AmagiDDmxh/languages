@@ -16,7 +16,9 @@ let mapToNumber = numText =>
 let bullshitTriggerPoint = 1000
 let filterOutShit = n => n < bullshitTriggerPoint
 
-let outofBullshit = () => parser().filter(filterOutShit)
+let takeNth = (arr, n) => arr[n]
+
+let outofBullshit = () => parser().filter(([t]) => filterOutShit(t))
 let sumUpRealshitArgs = [(acc, [t]) => acc + t, 0]
 
 let realshits = () => outofBullshit().reduce(...sumUpRealshitArgs)
