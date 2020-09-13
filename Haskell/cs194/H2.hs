@@ -60,12 +60,23 @@ handleTime _ c = c
 
 handleEvent :: Event -> Coord -> Coord
 handleEvent (KeyPress key) c
-    | key == "Right" = adjacentCoord R c
-    | key == "Up"    = adjacentCoord U c
-    | key == "Left"  = adjacentCoord L c
-    | key == "Down"  = adjacentCoord D c
+    | key == "Right" = move R c
+    | key == "Up"    = move U c
+    | key == "Left"  = move L c
+    | key == "Down"  = move D c
     | otherwise      = c
 handleEvent _ c      = c
+
+move :: Direction -> Coord -> Coord
+move d c = if (isOK (maze to)) 
+  then to 
+  else c 
+  where to = adjacentCoord d c
+
+isOK :: Tile -> Bool
+isOK Ground = True
+isOK Storage = True
+isOK _ = False
 
 player :: Picture
 player = colored pink (solidCircle 0.5)
