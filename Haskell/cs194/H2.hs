@@ -68,9 +68,14 @@ handleEvent (KeyPress key) c
 handleEvent _ c      = c
 
 move :: Direction -> Coord -> Coord
-move d c = if (isOK (maze to)) 
+{- move d c = if (isOK (maze to)) 
   then to 
   else c 
+  where to = adjacentCoord d c -}
+-- guards version
+move d c
+  | isOK (maze to) = to
+  | otherwise = c 
   where to = adjacentCoord d c
 
 isOK :: Tile -> Bool
