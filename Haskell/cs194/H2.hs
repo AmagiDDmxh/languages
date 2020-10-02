@@ -28,7 +28,7 @@ draw21times something = go (-10)
 
 drawTileAt :: Coord -> Picture
 drawTileAt (C r c) = translated (fromIntegral r) (fromIntegral c) (drawTile (maze (C r c)))
-         
+
 maze :: Coord -> Tile 
 maze (C x y)
   | abs x > 4  || abs y > 4  = Blank

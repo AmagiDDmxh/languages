@@ -24,3 +24,10 @@ minimalInt = minBound :: Int
 
 -- Typeclass Num
 numOne = fromIntegral 1
+
+-- Typeclass Eq
+fiveEqToFive = 5 == 5
+fiveNotEqToFive = 5 /= 5
+
+-- Typeclass Ord
+orderingLt = 4 `compare` 5
