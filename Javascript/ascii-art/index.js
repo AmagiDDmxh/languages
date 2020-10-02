@@ -1,6 +1,9 @@
 const { assert } = require('console')
 const { spawn } = require('child_process')
+const imageToAscii = require('image-to-ascii')
+const stringify = require('asciify-pixel-matrix')
 const sharp = require('sharp')
+const moment = require('moment')
 
 const log = console.log.bind(console)
 const ASCII_STR = "`^\",:;Il!i~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$"
@@ -95,13 +98,24 @@ const iterating2dArray = (data, fun = log) => {
   return result
 }
 
-const filePath = './test.jpg'
-const proc = spawn('imagesnap', [filePath, '-w', '2'])
+const printAsciiArray = arr => {
+  for (const row of arr) {
+    log(row.join(''))
+  }
+}
 
-proc.on('close', () => {
-  const image = sharp(filePath)
+const formatStr = 'YMDHHmmss'
+const filePath = () => {
+  return `./test-${moment().format(formatStr)}.jpg`
+}
+const imagePath = filePath()
+const proc = spawn('imagesnap', [imagePath, '-w', '2'])
+
+const main = () => {
+  const image = sharp(imagePath)
 
   image
+    // .resize(250)
     .raw()
     .toBuffer({ resolveWithObject: true })
     .then(imageData => {
@@ -112,12 +126,35 @@ proc.on('close', () => {
         pixels.length === height && pixels[0].length === width, 
         'pixels should now contains the image color for each pixel'
       )
-      const intensities = toIntensity(pixels, 'lightness')
-      const asciis = toAsciis(intensities)
-      log(to2dString(asciis))
+      const intensities = toIntensity(pixels)
+      const intensitiesLight = toIntensity(pixels, 'lightness')
+      const intensitiesLumi = toIntensity(pixels, 'luminosity')
+      // printAsciiArray(toAsciis(normalizeIntensityMatrix(intensities)))
+      // printAsciiArray(toAsciis(normalizeIntensityMatrix(intensitiesLight)))
+      printAsciiArray(toAsciis(normalizeIntensityMatrix(intensitiesLumi)))
       // const normalized = normalizeIntensityMatrix(intensities)
       // const asciilized = convertToAscii(normalized)
       // log(to2dString(asciilized))
       // log(asciis.map(s => s.join('')).join(''))
     })
+}
+
+proc.on('close', () => {
+  // main()
+  
+  imageToAscii(imagePath, {
+    // colored: false,
+    // reverse: true,
+    bg: true,
+    fg: false,
+    stringify: false,
+    concat: false
+  }, (err, converted) => {
+    if (err) {
+      log('...', err)
+      return
+    }
+
+    log(stringify.stringifyMatrix(converted))
+  })
 })

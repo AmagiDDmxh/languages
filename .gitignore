@@ -105,7 +105,7 @@ build/Release
 **/node_modules/
 jspm_packages/
 **/package-lock.json
-**/test.jpg
+**/test*.jpg
 
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/

@@ -76,9 +76,13 @@ filepath = "./test.jpg"
 subprocess.call(["imagesnap", filepath, "-w", "2"])
 
 img = Image.open(filepath)
+size = (MAX_PIXEL_VALUE, int(MAX_PIXEL_VALUE / img.width * img.height))
+resized_img = img.resize(size)
 pixels = get_pixel_matrix(img, 1000)
 
 intensity_matrix = get_intensity_matrix(pixels, 'luminosity')
+# intensity_matrix = get_intensity_matrix(pixels, 'max_min')
+# intensity_matrix = get_intensity_matrix(pixels)
 intensity_matrix = normalize_intensity_matrix(intensity_matrix)
 #intensity_matrix = invert_intensity_matrix(intensity_matrix)
 #intensity_matrix = invert_intensity_matrix(intensity_matrix)
