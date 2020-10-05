@@ -43,9 +43,16 @@ elem' a (x:xs)
   | a == x    = True
   | otherwise = a `elem'` xs
 
+-- quicksort example grap from: http://learnyouahaskell.com/recursion#quick-sort
+-- TODO: Why is this quicksort works when, items in list like this [3, 2, 1]
+-- quicksort [3, 2, 1], in this case, smaller sort whould be a infinity call
+-- since [a | a <- [3,2,1], a <= 3] == [3,2,1]
 quicksort :: (Ord a) => [a] -> [a]  
 quicksort [] = []  
 quicksort (x:xs) =   
     let smallerSorted = quicksort [a | a <- xs, a <= x]  
         biggerSorted  = quicksort [a | a <- xs, a > x]  
     in  smallerSorted ++ [x] ++ biggerSorted 
+
+
+-- Higher order function
