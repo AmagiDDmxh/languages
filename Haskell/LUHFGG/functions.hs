@@ -54,5 +54,65 @@ quicksort (x:xs) =
         biggerSorted  = quicksort [a | a <- xs, a > x]  
     in  smallerSorted ++ [x] ++ biggerSorted 
 
-
 -- Higher order function
+zipWith' :: (a -> b -> c) -> [a] -> [b] -> [c]
+zipWith' _ [] _ = []
+zipWith' _ _ [] = []
+zipWith' f (x:xs) (y:ys) = f x y : zipWith' f xs ys  
+
+-- zipWith' (zipWith' (*)) [[1,2,3],[3,5,6],[2,3,4]] [[3,2,2],[3,4,5],[5,4,3]]  
+
+applyTwice :: (a -> a) -> a -> a
+applyTwice f x = f (f x)
+
+flip' :: (b -> a -> c) -> a -> b -> c
+flip' f x y = f y x
+
+map' :: (a -> b) -> [a] -> [b]
+map' _ [] = []
+map' f (x:xs) = f x : map' f xs
+
+filter' _ [] = []
+filter' p (x:xs)
+  | p x       = x : rest
+  | otherwise = rest
+  where rest = filter' p xs
+
+aNot b
+  | b = False
+  | otherwise = True
+
+not' :: (a -> Bool) -> a -> Bool
+not' f x = aNot (f x)
+
+-- Quicksort by filter
+quicksort' [] = []
+quicksort' (x:xs) =
+  let smallerSorted = quicksort' (filter' (<= x) xs)
+      biggerSorted  = quicksort' (filter' (not' (<= x)) xs)
+  in smallerSorted ++ [x] ++ biggerSorted
+
+divisibles n = (filter' p [100000, 99999..])
+  where p x = x `mod` n == 0
+
+largestDivisible :: (Integral a) => a -> a
+largestDivisible n = head (divisibles n)
+
+chain 1 = [1]
+chain x
+  | even x = x : chain (x `div` 2)
+  | odd  x = x : chain (x*3 + 1)
+
+
+argApplyTo x = let listOfFuncs = [(+2), (*2), (^2), (/2), sqrt] 
+  in map ($ x) listOfFuncs 
+
+-- Different style of making use of composite and lazy load
+oddSquareSum :: Integer
+-- oddSquareSum = sum . takeWhile (<100000) . filter odd . map (^2) $ [1..]
+
+oddSquareSum =
+  let oddSquare  = filter odd $ map (^2) [1..]
+      belowLimit = takeWhile (<100000) oddSquare
+  in sum belowLimit
+
