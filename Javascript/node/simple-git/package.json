@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "simple-git": "^2.24.0"
+  },
+  "scripts": {
+    "start": "rm -rf ./repo/git-js && node ."
+  }
+}

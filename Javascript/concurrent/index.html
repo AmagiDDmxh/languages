@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button id="btn">Click me</button>
+  <h1 id="count"></h1>
+
+  <script>
+    const countEl = document.querySelector('#count')
+    const btnEl = document.querySelector('#btn')
+
+    const isFunc = (obj) => typeof obj === 'function'
+
+    let state = { count: 0 }
+
+    const setState = (newState) => setTimeout(() => {
+      if (isFunc(newState)) {
+        const nextState = newState(state)
+        state = nextState
+        render()
+        return
+      }
+      state = newState
+      render()
+    }, 0)
+
+    const incrementCount = () => setState(prevState => ({ count: prevState.count + 1 }))
+    
+
+    btn.onclick = () => {
+      incrementCount()
+      incrementCount()
+      incrementCount()
+    }
+
+    const render = () => {
+      countEl.textContent = state.count
+    }
+
+    render()
+  </script>
+</body>
+</html>
