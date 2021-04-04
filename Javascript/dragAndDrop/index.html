@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        box-sizing: content-box;
+      }
+
+      #draggable {
+        background-image: url("https://openclipart.org/image/300px/svg_to_png/245506/orange-lineart.png&disposition=attachment");
+        height: 70px;
+        width: 70px;
+        background-size: contain;
+        position: absolute;
+        cursor: move;
+      }
+
+      #draggable.selected {
+        border: 1px solid blue;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="draggable"></div>
+
+    <script>
+      let selected = false;
+      let startX;
+      let startY;
+
+      const draggable$ = document.querySelector("#draggable");
+      draggable$.addEventListener("mousedown", (e) => {
+        selected = true;
+        startX = e.offsetX;
+        startY = e.offsetY;
+        renderDraggable();
+      });
+
+      document.addEventListener("mousemove", (e) => {
+        if (selected) {
+          const { clientX, clientY } = e;
+          e.preventDefault();
+          renderDraggable(clientX - startX, clientY - startY);
+        }
+      });
+      draggable$.addEventListener("mouseup", (e) => {
+        selected = false;
+        renderDraggable();
+      });
+
+      const renderDraggable = (x, y) => {
+        draggable$.style.top = y + "px";
+        draggable$.style.left = x + "px";
+
+        if (selected) {
+          draggable$.classList.add("selected");
+        } else {
+          draggable$.classList.remove("selected");
+        }
+      };
+    </script>
+  </body>
+</html>
