@@ -1,7 +1,6 @@
-#include <cs50.h>
 #include <stdio.h>
 
-int main(int argc, string argv[])
+int main(int argc, char** argv)
 {
   printf("%d\n", argc);
   for (int i = 1; i < argc; i++)
